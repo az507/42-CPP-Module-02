@@ -25,3 +25,5 @@ class	Fixed
 		int			fixedPtNbr;
 		static const int	fracBitsNbr = 8;
 };
+
+std::ostream&	operator<<( std::ostream& os, const Fixed& obj );
