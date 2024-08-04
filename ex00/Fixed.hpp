@@ -1,20 +1,25 @@
-#pragma once
+#ifndef FIXED_HPP
+# define FIXED_HPP
 
-#include <iostream>
+# include <iostream>
 
 class	Fixed
 {
 	public:
-		Fixed( void );
-		Fixed( const Fixed& );
-		~Fixed( void );
+		Fixed(void);
+		Fixed(const Fixed &);
 
-		Fixed&	operator=( const Fixed& );
+		Fixed	&operator=(const Fixed &);
 
-		int	getRawBits( void ) const;
-		void	setRawBits( int const raw );
+		~Fixed(void);
+
+		int	getRawBits(void) const;
+		void	setRawBits(int const raw);
 
 	private:
-		int			fixedPtNbr;
-		static const int	fracBitsNbr = 8;
+		int			_nbr;
+		static const int	_fracbits = 8;
+
 };
+
+#endif

@@ -3,55 +3,49 @@
 
 # include <iostream>
 # include <cmath>
-# include <climits>
 
 class	Fixed
 {
 	public:
-		Fixed( void );
-		Fixed( Fixed const& );
-		Fixed( int const );
-		Fixed( float const );
-		~Fixed( void );
+		Fixed(void);
+		Fixed(const Fixed &);
+		Fixed(const int);
+		Fixed(const float);
 
-		Fixed&	operator=( Fixed const& );
-
-		bool	operator<( Fixed const& ) const;
-		bool	operator>( Fixed const& ) const;
-		bool	operator>=( Fixed const& ) const;
-		bool	operator<=( Fixed const& ) const;
-		bool	operator==( Fixed const& ) const;
-		bool	operator!=( Fixed const& ) const;
-
-		Fixed	operator+( Fixed const& );
-		Fixed	operator-( Fixed const& );
-		Fixed	operator*( Fixed const& );
-		Fixed	operator/( Fixed const& );
-
-		Fixed&	operator++( void );
-		Fixed	operator++( int );
-
-		Fixed&	operator--( void );
-		Fixed	operator--( int );
-
-		int	getRawBits( void ) const;
-		void	setRawBits( int const raw );
+		Fixed	&operator=(const Fixed &);
+		bool	operator<(const Fixed &);
+		bool	operator>(const Fixed &);
+		bool	operator<=(const Fixed &);
+		bool	operator>=(const Fixed &);
+		bool	operator==(const Fixed &);
+		bool	operator!=(const Fixed &);
+		Fixed	operator+(const Fixed &);
+		Fixed	operator-(const Fixed &);
+		Fixed	operator*(const Fixed &);
+		Fixed	operator/(const Fixed &);
+		Fixed	&operator++(void);
+		Fixed	operator++(int);
+		Fixed	&operator--(void);
+		Fixed	operator--(int);
 		
-		float	toFloat( void ) const;
-		int	toInt( void ) const;
+		~Fixed(void);
 
-		static Fixed&	min( Fixed&, Fixed& );
-		static Fixed&	min( Fixed const&, Fixed const& );
-
-		static Fixed&	max( Fixed&, Fixed& );
-		static Fixed&	max( Fixed const&, Fixed const& );
+		int	getRawBits(void) const;
+		void	setRawBits(int const raw);
+		float	toFloat(void) const;
+		int	toInt(void) const;
+		static Fixed	&min(Fixed &, Fixed &);
+		static Fixed	&min(const Fixed &, const Fixed &);
+		static Fixed	&max(Fixed &, Fixed &);
+		static Fixed	&max(const Fixed &, const Fixed &);
 
 	private:
-		int			fixedPtNbr;
-		static const int	fracBitsNbr = 8;
-		static const float	convertRatio;
+		int			_nbr;
+		static const int	_fracbits = 8;
+		static const float	_scale;
+
 };
 
-std::ostream&	operator<<( std::ostream& os, Fixed const& obj );
+std::ostream	&operator<<(std::ostream &, const Fixed &);
 
 #endif

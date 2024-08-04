@@ -1,223 +1,161 @@
 #include "Fixed.hpp"
 
-const float	Fixed::convertRatio = powf( 2.0f, fracBitsNbr );
+const float	Fixed::_scale = powf(2.0f, _fracbits);
 
-
-Fixed::Fixed( void ) : fixedPtNbr( 0 )
+Fixed::Fixed(void) : _nbr(0)
 {
-	std::cout << "Default constructor called"  << std::endl;
+	//std::cout << "Default constructor called" << std::endl;
 }
 
-
-Fixed::Fixed( Fixed const& copy )
+Fixed::Fixed(const Fixed &obj)
 {
-	std::cout << "Copy constructor called" << std::endl;
-
-	*this = copy;
+	//std::cout << "Copy constructor called" << std::endl;
+	*this = obj;
 }
 
-
-Fixed::Fixed( int const num ) : fixedPtNbr( num << fracBitsNbr )
+Fixed::Fixed(const int num) : _nbr(num << _fracbits)
 {
-	std::cout << "Int constructor called" << std::endl;
+	//std::cout << "Int constructor called" << std::endl;
 }
 
-
-Fixed::Fixed( float const fpnum ) : fixedPtNbr( roundf(fpnum * convertRatio) )
+Fixed::Fixed(const float num) : _nbr(roundf(num * _scale))
 {
-	std::cout << "Float constructor called" << std::endl;
+	//std::cout << "Float constructor called" << std::endl;
 }
 
-
-Fixed&	Fixed::operator=( Fixed const& obj )
-{ 
-	std::cout << "Copy assignment operator called" << std::endl;
-
+Fixed	&Fixed::operator=(const Fixed& obj)
+{
+	//std::cout << "Copy assignment operator called" << std::endl;
 	if (this != &obj)
-		this->fixedPtNbr = obj.getRawBits();
-
-	return ( *this );
+		this->_nbr = obj.getRawBits();
+	return (*this);
 }
 
-
-bool	Fixed::operator>( Fixed const& obj ) const
+bool	Fixed::operator<(const Fixed &obj) const
 {
-	return ( this->toFloat() > obj.toFloat() );
+	return (this->_nbr < obj._nbr) ? true : false;
 }
 
-
-bool	Fixed::operator<( Fixed const& obj ) const
+bool	Fixed::operator>(const Fixed &obj) const
 {
-	return ( this->toFloat() < obj.toFloat() );
+	return !(*this < obj);
 }
 
-
-bool	Fixed::operator>=( Fixed const& obj ) const
+bool	Fixed::operator<=(const Fixed &obj) const
 {
-	return ( *this > obj || *this == obj );
+	return (*this < obj || *this == obj);
 }
 
-
-bool	Fixed::operator<=( Fixed const& obj ) const
+bool	Fixed::operator>=(const Fixed &obj) const
 {
-	return ( *this < obj || *this == obj );
+	return (*this > obj || *this == obj);
 }
 
-
-bool	Fixed::operator==( Fixed const& obj ) const
+bool	Fixed::operator==(const Fixed &obj) const
 {
-	return ( this->toFloat() == obj.toFloat() );
+	return (this->_nbr == obj._nbr) ? true : false;
 }
 
-
-bool	Fixed::operator!=( Fixed const& obj ) const
+bool	Fixed::operator!=(const Fixed &obj) const
 {
-	return !( *this == obj );
+	return !(*this == obj);
 }
 
-
-Fixed	Fixed::operator+( Fixed const& other )
+Fixed	Fixed::operator+(const Fixed &obj) const
 {
-	Fixed	f;
-
-	f.fixedPtNbr = this->fixedPtNbr + other.fixedPtNbr;
-	return ( f );
+	return Fixed(this->toFloat() + obj.toFloat());
 }
 
-
-Fixed	Fixed::operator-( Fixed const& other )
+Fixed	Fixed::operator-(const Fixed &obj) const
 {
-	Fixed	f;
-
-	f.fixedPtNbr = this->fixedPtNbr - other.fixedPtNbr;
-	return ( f );
+	return Fixed(this->toFloat() - obj.toFloat());
 }
 
-
-Fixed	Fixed::operator*( Fixed const& other )
+Fixed	Fixed::operator*(const Fixed &obj) const
 {
-	Fixed	f;
-
-	f.setRawBits( roundf( ( this->toFloat() * other.toFloat() )
-			* powf( 2.0f, fracBitsNbr ) ) );
-	return ( f );
+	return Fixed(this->toFloat() * obj.toFloat());
 }
 
-
-Fixed	Fixed::operator/( Fixed const& other )
+Fixed	Fixed::operator/(const Fixed &obj) const
 {
-	Fixed	f;
-
-	f.setRawBits( roundf( ( this->toFloat() / other.toFloat() )
-			* powf( 2.0f, fracBitsNbr ) ) );
-	return ( f );
+	return Fixed(this->toFloat() / obj.toFloat());
 }
 
-
-Fixed&	Fixed::operator++( void )
+Fixed	&Fixed::operator++(void)
 {
-	this->fixedPtNbr++;
-
-	return ( *this );
+	return (this->_nbr++, *this);
 }
 
-
-Fixed	Fixed::operator++( int )
+Fixed	Fixed::operator++(int)
 {
-	Fixed	instance( *this );
-	++*this;
+	Fixed	f(*this);
 
-	return ( instance );
+	return (++*this, f);
 }
 
-
-Fixed&	Fixed::operator--( void )
+Fixed	&Fixed::operator--(void)
 {
-	this->fixedPtNbr--;
-
-	return ( *this );
-
+	return (this->_nbr--, *this);
 }
 
-
-Fixed	Fixed::operator--( int )
+Fixed	Fixed::operator--(int)
 {
-	Fixed	instance( *this );
-	--*this;
+	Fixed	f(*this);
 
-	return ( instance );
+	return (--*this, f);
 }
 
-
-Fixed::~Fixed( void )
+Fixed::~Fixed(void)
 {
-	std::cout << "Destructor called" << std::endl;
+	//std::cout << "Destructor called" << std::endl;
 }
 
-
-int	Fixed::getRawBits( void ) const
+int	Fixed::getRawBits(void) const
 {
-	std::cout << "getRawBits member function called" << std::endl;
-
-	return ( this->fixedPtNbr );
+	//std::cout << "getRawBits member function called" << std::endl;
+	return (this->_nbr);
 }
 
-
-void	Fixed::setRawBits( int const raw )
+void	Fixed::setRawBits(int const raw)
 {
-	std::cout << "setRawBits member function called" << std::endl;
-
-	this->fixedPtNbr = raw;
+	//std::cout << "setRawBits member function called" << std::endl;
+	this->_nbr = raw;
 }
 
-
-float	Fixed::toFloat( void ) const
+float	Fixed::toFloat(void) const
 {
-	return ( static_cast<float>(this->fixedPtNbr) / convertRatio );
+	return (this->_nbr / _scale);
 }
 
-
-int	Fixed::toInt( void ) const
+int	Fixed::toInt(void) const
 {
-	return ( this->fixedPtNbr / convertRatio );
+	return (this->_nbr >> _fracbits);
 }
 
-
-Fixed&	Fixed::min( Fixed& f1, Fixed& f2 )
+Fixed	&Fixed::min(Fixed &f1, Fixed &f2)
 {
-	Fixed&	f3 = ( f1 < f2 ) ? f1 : f2;
-
-	return ( f3 );
+	return (f1 < f2) ? f1 : f2;
 }
 
-
-Fixed&	Fixed::min( Fixed const& f1, Fixed const& f2 )
+Fixed	&Fixed::min(const Fixed &f1, const Fixed &f2)
 {
-	Fixed&	f3 = (f1 < f2) ? const_cast<Fixed&>(f1) : const_cast<Fixed&>(f2);
-	
-	return (f3);
+	return (const_cast<Fixed &>(f1) < const_cast<Fixed &>(f2))
+		? const_cast<Fixed &>(f1) : const_cast<Fixed &>(f2);
 }
 
-
-Fixed	&Fixed::max(Fixed &f1, Fixed& f2)
+Fixed	&Fixed::max(Fixed &f1, Fixed &f2)
 {
-	Fixed	&f3 = (f1 > f2) ? f1 : f2;
-
-	return (f3);
+	return (f1 > f2) ? f1 : f2;
 }
 
-
-Fixed&	Fixed::max(Fixed const& f1, Fixed const& f2)
+Fixed	&Fixed::max(const Fixed &f1, const Fixed &f2)
 {
-	Fixed&	f3 = (f1 > f2) ? const_cast<Fixed&>(f1) : const_cast<Fixed&>(f2);
-
-	return (f3);
+	return (const_cast<Fixed &>(f1) > const_cast<Fixed &>(f2))
+		? const_cast<Fixed &>(f1) : const_cast<Fixed &>(f2);
 }
 
-
-std::ostream&	operator<<(std::ostream& os, const Fixed &obj)
+std::ostream	&operator<<(std::ostream &os, const Fixed &obj)
 {
 	os << obj.toFloat();
-
 	return (os);
 }
